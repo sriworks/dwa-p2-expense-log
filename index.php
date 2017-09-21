@@ -2,11 +2,13 @@
 <!-- Php Includes -->
 <?php require('lib/expenses-mgmt.php'); ?>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <!-- Bootstrap CSS - load it from CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
+
 <body>
     <div class="container">
         <h2 class="text-center">Expense Management</h2>
@@ -17,7 +19,7 @@
                         <h3 class="panel-title">Log your Expense</h3>
                     </div>
                     <div class="panel-body">
-                        <form action="/p2/index.php" method="post">
+                        <form action="/" method="post">
                             <div class="form-group">
                                 <label for="category">Expense Category<span class="text-danger">*</span></label>
                                 <select class="form-control" id="category" name="category" required>
@@ -45,36 +47,36 @@
                                 </label>
                             </div>
                             <div class="text-right">
-                            <input type="submit" class="btn btn-primary"/>
+                                <input type="submit" class="btn btn-primary" />
                             </div>
                         </form>
                     </div>
                     <h3 class="text-center">Current Expenses</h3>
                     <table class="table table-hover">
-                <tr>
-                    <th>Expense</th>
-                    <th>Transaction Date</th>
-                    <th>Amount</th>
-                    <th>Exclude from Budget?</th>
-                </tr>
-                <?php foreach($all_expenses as $expense){ ?>
-                <tr>
-                    <td><b><?= $expense['category'] ?></b>
-                        <br/>
-                        <?= $expense['memo'] ?>
-                    </td>
-                    <td>
-                        <?= date($expense['transaction_date']) ?>
-                    </td>
-                    <td>
-                        <?= $expense['amount'] ?>
-                    </td>
-                    <td>
-                        <?= $expense['options']['exclude_from_budget'] ? 'Yes': 'No' ?>
-                    </td>
-                </tr>
-                <?php } ?>
-            </table>
+                        <tr>
+                            <th>Expense</th>
+                            <th>Transaction Date</th>
+                            <th>Amount</th>
+                            <th>Exclude from Budget?</th>
+                        </tr>
+                        <?php foreach($all_expenses as $expense){ ?>
+                        <tr>
+                            <td><b><?= $expense['category'] ?></b>
+                                <br/>
+                                <?= $expense['memo'] ?>
+                            </td>
+                            <td>
+                                <?= date($expense['transaction_date']) ?>
+                            </td>
+                            <td>
+                                <?= $expense['amount'] ?>
+                            </td>
+                            <td>
+                                <?= $expense['options']['exclude_from_budget'] ? 'Yes': 'No' ?>
+                            </td>
+                        </tr>
+                        <?php } ?>
+                    </table>
                 </div>
             </div>
         </div>
