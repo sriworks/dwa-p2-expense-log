@@ -24,20 +24,21 @@ function add_new_expense($data){
     file_put_contents($GLOBALS['expenses_data_file'], $expenses_raw);
 }
 
-
-// Check for post data
+/**
+ * Add a record in JSON file if POST is submitted. #TODO: Validation
+ */
 function check_for_post_data(){
   if($_POST){
-      $expense->category = $_POST['category'];
-      $expense->memo = $_POST['memo'];
-      $expense_options->exclude_from_budget = $_POST['exclude_from_budget'];
-      $expense_options->amount = $_POST['amount'];
-      $expense_options->transaction_date = $_POST['transaction_date'];
-      $expense->options = $expense_options;
+      $expense = array(
+            'category' => $_POST['category'],
+            'memo' => $_POST['memo'],
+            'options'=> array('exclude_from_budget'=>$_POST['exclude_from_budget']),
+            'amount'=> $_POST['amount'],
+            'transaction_date' => $_POST['transaction_date']
+      );
       add_new_expense($expense);
-  }  
+  }
 }
-
 
 // Handle Form Post - #TODO Sanitization & Validation
 check_for_post_data();

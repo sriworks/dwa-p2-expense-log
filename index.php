@@ -17,10 +17,10 @@
                         <h3 class="panel-title">Log your Expense</h3>
                     </div>
                     <div class="panel-body">
-                        <form action="" method="POST">
+                        <form action="/p2/index.php" method="post">
                             <div class="form-group">
-                                <label for="category">Expense Category:</label>
-                                <select class="form-control" id="category">
+                                <label for="category">Expense Category<span class="text-danger">*</span></label>
+                                <select class="form-control" id="category" name="category" required>
                                     <option value="Loans">Loans</option>
                                     <option value="Shopping">Shopping</option>
                                     <option value="Dining">Dining</option>
@@ -28,20 +28,24 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="amount">Expense Amount(In USD)</label>
-                                <input type="number" class="form-control" id="amount" placeholder="Amount">
+                                <label for="transaction_date">Transaction Date<span class="text-danger">*</span></label>
+                                <input type="date" name="transaction_date" class="form-control" id="transaction_date" placeholder="Transaction Date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="amount">Expense Amount In USD<span class="text-danger">*</span></label>
+                                <input type="number" name="amount" class="form-control" id="amount" placeholder="Amount" required>
                             </div>
                             <div class="form-group">
                                 <label for="memo">Memo</label>
-                                <input type="text" class="form-control" id="memo" placeholder="Memo">
+                                <input type="text" class="form-control" id="memo" name="memo" placeholder="Memo">
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" id="exclude_from_budget"> Exclude from Budget?
+                                    <input type="checkbox" id="exclude_from_budget" name="exclude_from_budget"> Exclude from Budget?
                                 </label>
                             </div>
                             <div class="text-right">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <input type="submit" class="btn btn-primary"/>
                             </div>
                         </form>
                     </div>
@@ -51,7 +55,7 @@
                     <th>Expense</th>
                     <th>Transaction Date</th>
                     <th>Amount</th>
-                    <th>Included in Budget?</th>
+                    <th>Exclude from Budget?</th>
                 </tr>
                 <?php foreach($all_expenses as $expense){ ?>
                 <tr>
@@ -60,7 +64,7 @@
                         <?= $expense['memo'] ?>
                     </td>
                     <td>
-                        <?= $expense['transaction_date'] ?>
+                        <?= date($expense['transaction_date']) ?>
                     </td>
                     <td>
                         <?= $expense['amount'] ?>
@@ -72,11 +76,8 @@
                 <?php } ?>
             </table>
                 </div>
-                
             </div>
-            
         </div>
-        
     </div>
 </body>
 </html>
