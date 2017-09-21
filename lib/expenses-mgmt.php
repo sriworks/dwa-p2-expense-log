@@ -1,6 +1,6 @@
 <?php
 
-$expenses_data_file="lib/expenses.json";
+$expenses_data_file="/tmp/expenses.json";
 
 /**
  * Get a list of all expenses in a JSON format.
