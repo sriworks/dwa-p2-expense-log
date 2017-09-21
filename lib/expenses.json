@@ -1,0 +1,19 @@
+[{
+    "transaction_date": "DATE",
+    "memo": "Mortgage Payment",
+    "amount": 123.45,
+    "category": "loans",
+    "options": {
+        "is_reimbursable": true,
+        "exclude_from_budget": false
+    }
+}, {
+    "transaction_date": "DATE",
+    "memo": "Mortgage Payment",
+    "amount": 123.45,
+    "category": "loans",
+    "options": {
+        "is_reimbursable": true,
+        "exclude_from_budget": false
+    }
+}]
