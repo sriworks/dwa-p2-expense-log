@@ -49,7 +49,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="transaction_date">Transaction Date<span class="text-danger">*</span></label>
-                                <input type="text" name="transaction_date" class="form-control" id="transaction_date"  value='<?=$form->prefill('transaction_date', '')?>' required>
+                                <input type="text" name="transaction_date" class="form-control" id="transaction_date" placeholder="Transaction Date(mm/dd/yyyy)"  value='<?=$form->prefill('transaction_date', '')?>' required>
                             </div>
                             <div class="form-group">
                                 <label for="amount">Expense Amount In USD<span class="text-danger">*</span></label>
