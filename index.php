@@ -5,6 +5,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <title>Expense Management - Log your expenses!</title>
     <!-- Bootstrap CSS - load it from CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
@@ -19,31 +20,48 @@
                         <h3 class="panel-title">Log your Expense</h3>
                     </div>
                     <div class="panel-body">
-                        <form action="/" method="post">
+                        <?php if (!empty($errors)) : ?>
+                            <div class='alert alert-danger'>
+                                <strong>Error Occured:</strong>
+                                <ul>
+                                    <?php foreach ($errors as $error) : ?>
+                                        <li><?=$error?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php endif ?>
+                        <?php if (empty($errors) && $form->isSubmitted() && isset($expense_create_success)) : ?>
+                            <div class='alert alert-success'>
+                                <strong>Success!</strong>
+                                <p>Expense for <?= $form->prefill('amount') ?> created under <?= $form->prefill('category') ?>  category! </p>    
+                            </div>
+                        <?php endif ?>
+                        
+                        <form method="post">
                             <div class="form-group">
                                 <label for="category">Expense Category<span class="text-danger">*</span></label>
-                                <select class="form-control" id="category" name="category" required>
-                                    <option value="Loans">Loans</option>
-                                    <option value="Shopping">Shopping</option>
-                                    <option value="Dining">Dining</option>
-                                    <option value="Entertainment">Entertainment</option>
+                                <?php $selected_category = $form->prefill('category', ''); ?>
+                                <select class="form-control" id="category" name="category" >
+                                    <?php foreach ($expense_categories as $key=>$value) : ?>
+                                        <option value="<?=$key?>" <?php if($selected_category == $key){ echo 'selected'; } else { echo ''; } ?> ><?=$value?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="transaction_date">Transaction Date<span class="text-danger">*</span></label>
-                                <input type="date" name="transaction_date" class="form-control" id="transaction_date" placeholder="Transaction Date" required>
+                                <input type="text" name="transaction_date" class="form-control" id="transaction_date"  value='<?=$form->prefill('transaction_date', '')?>' required>
                             </div>
                             <div class="form-group">
                                 <label for="amount">Expense Amount In USD<span class="text-danger">*</span></label>
-                                <input type="number" name="amount" class="form-control" id="amount" placeholder="Amount" required>
+                                <input type="text" name="amount" class="form-control" id="amount" placeholder="Amount" value='<?=$form->prefill('amount', '')?>' required>
                             </div>
                             <div class="form-group">
                                 <label for="memo">Memo</label>
-                                <input type="text" class="form-control" id="memo" name="memo" placeholder="Memo">
+                                <input type="text" class="form-control" id="memo" name="memo" placeholder="Memo" value='<?=$form->prefill('memo', '')?>'>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" id="exclude_from_budget" name="exclude_from_budget"> Exclude from Budget?
+                                    <input type="checkbox" id="exclude_from_budget" name="exclude_from_budget" value='<?=$form->isChosen('exclude_from_budget', '')?>'> Exclude from Budget?
                                 </label>
                             </div>
                             <div class="text-right">

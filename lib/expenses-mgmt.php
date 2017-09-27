@@ -1,47 +1,38 @@
 <?php
+require('ExpenseDAO.php');
+require('vendor/Form.php');
+
+use DWA\Form;
+use ExpenseManagement\ExpenseDAO;
 
 $expenses_data_file="/tmp/expenses.json";
+$expenseDAO = new ExpenseDAO($GLOBALS['expenses_data_file']);
+$form = new Form($_POST);
+$expense_categories = array('Loans' => 'Loans', 'Shopping' => 'Shopping', 'Dining' => 'Dining', 'Entertainment' => 'Entertainment');
 
-/**
- * Get a list of all expenses in a JSON format.
- *
- * @return Array of available expenses
- */
-function get_all_expenses(){
-    $expenses = file_get_contents($GLOBALS['expenses_data_file']);
-    return json_decode($expenses,true);
-}
+// Handle Form Post
+ if ($form->isSubmitted()) {
 
-/**
- * Add new expense in a JSON file.
- */
-function add_new_expense($data){
-    // Read current Json.
-    $expenses_raw  = file_get_contents($GLOBALS['expenses_data_file']);
-    $expenses_json = json_decode($expenses_raw);
-    array_push($expenses_json, $data);
-    $expenses_raw = json_encode($expenses_json);
-    file_put_contents($GLOBALS['expenses_data_file'], $expenses_raw);
-}
+    # Validate
+    $errors = $form->validate([
+        'category' => 'required',  // Category is required.
+        'amount' => 'required|numeric',  // amount is required and have to be numeric.
+        'transaction_date' => 'required|date'  // Transaction date is required and has to be a valid date.
+    ]);
+    
+    // Create new Expense if no errors found.
+    if (empty($errors)) {
+        $expense = array(
+            'category' => $form->get('category', ''),
+            'memo' => $form->get('memo', '') ,
+            'options'=> array('exclude_from_budget'=> $form->isChosen('exclude_from_budget', '')),
+            'amount'=> $form->get('amount', ''),
+            'transaction_date' => $form->get('transaction_date', ''));
+        $expenseDAO->createNewExpense($expense);
+        $expense_create_success = true;
+    }
+ }
 
-/**
- * Add a record in JSON file if POST is submitted. #TODO: Validation
- */
-function check_for_post_data(){
-  if($_POST){
-      $expense = array(
-            'category' => $_POST['category'],
-            'memo' => $_POST['memo'],
-            'options'=> array('exclude_from_budget'=>$_POST['exclude_from_budget']),
-            'amount'=> $_POST['amount'],
-            'transaction_date' => $_POST['transaction_date']
-      );
-      add_new_expense($expense);
-  }
-}
 
-// Handle Form Post - #TODO Sanitization & Validation
-check_for_post_data();
-
-// Get All expenses on load.
-$all_expenses = get_all_expenses();
+// Load all existing expenses. 
+$all_expenses = $expenseDAO->getAllExpenses();
